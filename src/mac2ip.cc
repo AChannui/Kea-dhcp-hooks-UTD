@@ -1,6 +1,7 @@
 #include <sstream>
 #include <iomanip>
 #include "mac2ip.h"
+#include "logger.h"
 
 extern "C" {
 
@@ -17,6 +18,8 @@ std::string mac2ipv6(const std::vector<uint8_t> mac_addr, const std::vector<uint
             oss << ":";
         }
     }
+    LOG_ERROR(hook_mac2ipv6::logger, "remote prefix");
+    printf("remote prefix\n");
 
     // mac address
     for (unsigned i=0; i<mac_addr.size(); i++) {
@@ -32,11 +35,13 @@ std::string mac2ipv6(const std::vector<uint8_t> mac_addr, const std::vector<uint
 
         oss << std::setfill('0') << std::setw(2) << std::hex << (uint16_t)u;
 
-        if ((i % 2) && (i<5)) {
+        if ((i % 2) && (i<6)) {
             oss << ":";
         }
     }
 
+    LOG_ERROR(hook_mac2ipv6::logger, "full address '%1'").arg(oss.str().c_str());
+    printf("%s\n", oss.str().c_str()); 
     return oss.str();
 };
 

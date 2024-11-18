@@ -17,6 +17,7 @@ int lease6_select(CalloutHandle& handle)
     Pkt6Ptr query;
     Lease6Ptr lease;
     Subnet6Ptr subnet;
+    bool fake_alloc;
 
     handle.getArgument("query6", query);
 
@@ -42,6 +43,8 @@ int lease6_select(CalloutHandle& handle)
 
     // set ip address from mac address
     lease->addr_=IOAddress(mac2ipv6(lease->hwaddr_->hwaddr_, query->getRelay6LinkAddress(0).toBytes()));
+
+    handle.setArgument("fake_allocation", true);
 
     LOG_DEBUG(hook_mac2ipv6::logger, 1, "Selected address '%1' from mac address '%2' and link address '%3'").arg(lease->addr_).arg(lease->hwaddr_->toText()).arg(query->getRelay6LinkAddress(0));
 
